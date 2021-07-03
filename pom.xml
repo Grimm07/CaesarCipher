@@ -1,0 +1,7 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>main.manipulator</groupId>
+    <artifactId>ByteManipulator</artifactId>
+    <version>1</version>
+    <build></build>
+</project>
