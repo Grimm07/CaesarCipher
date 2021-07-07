@@ -1,10 +1,29 @@
-package main.manipulator;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
+import org.junit.Test;
 
 public class ByteManipulator {
-    public static void manipulateBytes(String fileName) {
-        File targetFile = new File(fileName);
+    @Test
+    public void playBytes(){
+        String alpha = "abcdefghijklmnopqrstuvwxyz";
+        byte[] alphaBytes = alpha.getBytes(StandardCharsets.US_ASCII);
+        byte[] test = new byte[10];
+        System.out.println(alphaBytes[0]);
+        test[0] = (byte) 'a';
+        test[0]+= (byte) 'c';
+        test[1] = (byte) 97;
+        System.out.println(Arrays.toString(test));
+        //System.out.println(Byte.toString(test[1]));
+        //test[0] -= (byte) 'c';
+        String bytesToString = new String(test, StandardCharsets.UTF_8);
+        System.out.println(bytesToString);
+    }
+
+    @Test
+    public void manipulateBytes() {
+        String inputFile = "/Users/grimm/IdeaProjects/ByteManipulator/data/test-1.txt";
+        File targetFile = new File(inputFile);
         try {
 
             byte[] fileBytes = getBytes(targetFile);
@@ -14,7 +33,6 @@ public class ByteManipulator {
             Stack<Integer> listOfIndicies = new Stack<Integer>();
             for(int i = 0; i < fileBytes.length; i++){
                 if(i % 2 == 0){
-                    System.out.println("byte is even");
                     if(i % fileBytes.length == 0) {
                         System.out.println("I:" + i);
                         outputBytes[i] = fileBytes[i];
@@ -23,7 +41,7 @@ public class ByteManipulator {
                     }
                 } else if(i % 3 == 0){
                     outputBytes[position] = fileBytes[i];
-                    position --;
+                    position--;
                 } else{
                     listOfIndicies.push(i);
                 }
@@ -38,6 +56,12 @@ public class ByteManipulator {
                     outputBytes[curIndex] = fileBytes[nextIndex];
                 }
             }
+            String fileName = targetFile.getName().replace(".txt", "Out.txt");
+            File outputFile = new File(fileName);
+            FileOutputStream outputStream = new FileOutputStream(outputFile);
+            outputStream.write(outputBytes);
+            outputStream.close();
+            //outputFile.createNewFile();
         } catch(IOException e){
             System.out.println("IOException thrown. Could not manipulate ByteStream.");
         }
